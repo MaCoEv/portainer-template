@@ -1,0 +1,25 @@
+services:
+  mdbdr-portal:
+    image: macoev/mdbdr-portal:${MDBDR_PORTAL_TAG:-master}
+    restart: unless-stopped
+    ports:
+      - "${MDBDR_PORTAL_PORT:-8080}:8080"
+    environment:
+      # Single named volume holds the LiteDB database with registered Edge nodes and logs.
+      Storage__DatabasePath: /data/PortalData.db
+
+      # Required: human sign-in via OIDC. Authority must end with a trailing slash — the
+      # Portal appends "oidc" and "oidc/.well-known/openid-configuration" to it.
+      OpenIdConnect__Authority: ${OIDC_AUTHORITY:?Set the OIDC authority, e.g. https://idp.example.com/}
+      OpenIdConnect__ClientId: ${OIDC_CLIENT_ID:?Set the OIDC client id registered for the Portal}
+      OpenIdConnect__ClientSecret: ${OIDC_CLIENT_SECRET:?Set the OIDC client secret registered for the Portal}
+
+      # Optional: Seq sink for the Portal's own logs (Edge logs arrive via /api/edge/logs and
+      # are read back from LiteDB instead, regardless of this setting).
+      Seq__ServerUrl: ${SEQ_SERVER_URL:-}
+      Seq__ApiKey: ${SEQ_API_KEY:-}
+    volumes:
+      - mdbdr-portal-data:/data
+
+volumes:
+  mdbdr-portal-data:

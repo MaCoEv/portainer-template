@@ -14,6 +14,7 @@ Each app gets its own subfolder holding the stack file(s) `template.json` points
 `repository.stackfile`; shared static assets (logos, ...) live in `assets/`.
 
 - [`mdbdr-edge/`](mdbdr-edge/) — MongoDB Dump Scheduler Edge (`macoev/mdbdr`).
+- [`mdbdr-portal/`](mdbdr-portal/) — MongoDB Dump Scheduler Portal (`macoev/mdbdr-portal`).
 
 ## Adding a new template
 

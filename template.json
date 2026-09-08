@@ -105,6 +105,63 @@
           "description": "Optional. Slack/Discord-compatible webhook URL."
         }
       ]
+    },
+    {
+      "type": 3,
+      "title": "MongoDB Dump Scheduler (Portal)",
+      "description": "Central orchestrator for MongoDumpScheduler Edge nodes: registration, heartbeats, live SignalR status and log aggregation from one dashboard.",
+      "note": "Requires an OpenID Connect provider for human sign-in — the Authority, Client ID and Client Secret fields are required and the deploy fails without them. The Authority must end with a trailing slash (e.g. <code>https://idp.example.com/</code>). The LiteDB database persists in a named volume. Once running, point each Edge's <code>Portal:BaseUrl</code> at this instance.",
+      "categories": ["Backup", "Database", "Tools"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/MaCoEv/portainer-template/main/assets/mdbdr-edge-logo.svg",
+      "repository": {
+        "url": "https://github.com/MaCoEv/portainer-template",
+        "stackfile": "mdbdr-portal/docker-compose.yml"
+      },
+      "env": [
+        {
+          "name": "MDBDR_PORTAL_TAG",
+          "label": "Image tag",
+          "default": "master",
+          "description": "macoev/mdbdr-portal tag to deploy, e.g. master or a version tag."
+        },
+        {
+          "name": "MDBDR_PORTAL_PORT",
+          "label": "Host port",
+          "default": "8080",
+          "description": "Host port published for the Portal web UI."
+        },
+        {
+          "name": "OIDC_AUTHORITY",
+          "label": "OIDC authority",
+          "default": "",
+          "description": "Required. Must end with a trailing slash, e.g. https://idp.example.com/."
+        },
+        {
+          "name": "OIDC_CLIENT_ID",
+          "label": "OIDC client ID",
+          "default": "",
+          "description": "Required. Client ID registered with your identity provider for the Portal."
+        },
+        {
+          "name": "OIDC_CLIENT_SECRET",
+          "label": "OIDC client secret",
+          "default": "",
+          "description": "Required. Client secret registered with your identity provider for the Portal."
+        },
+        {
+          "name": "SEQ_SERVER_URL",
+          "label": "Seq server URL",
+          "default": "",
+          "description": "Optional. Ships the Portal's own logs to a Seq server; empty disables the sink entirely."
+        },
+        {
+          "name": "SEQ_API_KEY",
+          "label": "Seq API key",
+          "default": "",
+          "description": "Optional. Only used when a Seq server URL is set."
+        }
+      ]
     }
   ]
 }
