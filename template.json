@@ -1,0 +1,110 @@
+{
+  "version": "3",
+  "templates": [
+    {
+      "type": 3,
+      "title": "MongoDB Dump Scheduler (Edge)",
+      "description": "Scheduled, encrypted mongodump backups shipped to S3-compatible storage, with retention, restore verification and optional central management via a Portal.",
+      "note": "The web UI listens on the mapped host port (default 9999) once the container is healthy; check <code>/health</code>. The LiteDB config, AES key and backup files persist in a single named volume. All Portal, S3/MinIO and notification variables are optional — leave them blank to run this Edge standalone.",
+      "categories": ["Backup", "Database", "Tools"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/MaCoEv/portainer-template/main/assets/mdbdr-edge-logo.svg",
+      "repository": {
+        "url": "https://github.com/MaCoEv/portainer-template",
+        "stackfile": "mdbdr-edge/docker-compose.yml"
+      },
+      "env": [
+        {
+          "name": "MDBDR_TAG",
+          "label": "Image tag",
+          "default": "master",
+          "description": "macoev/mdbdr tag to deploy, e.g. master or a version tag."
+        },
+        {
+          "name": "MDBDR_PORT",
+          "label": "Host port",
+          "default": "9999",
+          "description": "Host port published for the Edge web UI."
+        },
+        {
+          "name": "PORTAL_BASE_URL",
+          "label": "Portal base URL",
+          "default": "",
+          "description": "Optional. URL of a MongoDumpScheduler Portal to register this Edge with, e.g. https://portal.mydomain.com."
+        },
+        {
+          "name": "PORTAL_API_KEY",
+          "label": "Portal API key",
+          "default": "",
+          "description": "Optional. API key issued by the Portal after registering this Edge."
+        },
+        {
+          "name": "PORTAL_EDGE_NAME",
+          "label": "Portal edge name",
+          "default": "",
+          "description": "Optional. Friendly name for this Edge shown in the Portal."
+        },
+        {
+          "name": "PORTAL_AUTHORITY",
+          "label": "Portal OIDC authority",
+          "default": "",
+          "description": "Optional. Needed only for Portal machine-to-machine authentication."
+        },
+        {
+          "name": "PORTAL_CLIENT_ID",
+          "label": "Portal OIDC client ID",
+          "default": "",
+          "description": "Optional. Needed only for Portal machine-to-machine authentication."
+        },
+        {
+          "name": "PORTAL_CLIENT_SECRET",
+          "label": "Portal OIDC client secret",
+          "default": "",
+          "description": "Optional. Needed only for Portal machine-to-machine authentication."
+        },
+        {
+          "name": "MINIO_ENDPOINT",
+          "label": "S3/MinIO endpoint",
+          "default": "",
+          "description": "Optional. S3-compatible endpoint backups are uploaded to."
+        },
+        {
+          "name": "MINIO_ACCESSKEY",
+          "label": "S3/MinIO access key",
+          "default": "",
+          "description": "Optional."
+        },
+        {
+          "name": "MINIO_SECRETKEY",
+          "label": "S3/MinIO secret key",
+          "default": "",
+          "description": "Optional."
+        },
+        {
+          "name": "MINIO_DEFAULT_BUCKETNAME",
+          "label": "S3/MinIO bucket",
+          "default": "",
+          "description": "Optional."
+        },
+        {
+          "name": "MINIO_REGION",
+          "label": "S3/MinIO region",
+          "default": "",
+          "description": "Optional."
+        },
+        {
+          "name": "NOTIFICATIONS_ENABLED",
+          "label": "Enable webhook notifications",
+          "default": "false",
+          "description": "Optional. true or false — notifies only on failures, never on success."
+        },
+        {
+          "name": "NOTIFICATIONS_WEBHOOK_URL",
+          "label": "Notification webhook URL",
+          "default": "",
+          "description": "Optional. Slack/Discord-compatible webhook URL."
+        }
+      ]
+    }
+  ]
+}

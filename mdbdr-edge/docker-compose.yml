@@ -1,0 +1,40 @@
+services:
+  mdbdr-edge:
+    image: macoev/mdbdr:${MDBDR_TAG:-master}
+    restart: unless-stopped
+    ports:
+      - "${MDBDR_PORT:-9999}:9999"
+    environment:
+      ASPNETCORE_URLS: http://0.0.0.0:9999
+      HEALTHCHECK_URL: http://localhost:9999/health
+
+      # Single named volume holds the LiteDB config, the AES key and the
+      # (encrypted) backup files, regardless of where the image defaults them.
+      Storage__DatabasePath: /data/config.db
+      Storage__AesKeyFilePath: /data/aes_key
+      Storage__ExternalIdFilePath: /data/edge_id.txt
+      MongoTools__BackupDirectory: /data/backup
+
+      # Optional: manage this Edge from a MongoDumpScheduler Portal.
+      Portal__BaseUrl: ${PORTAL_BASE_URL:-}
+      Portal__ApiKey: ${PORTAL_API_KEY:-}
+      Portal__EdgeName: ${PORTAL_EDGE_NAME:-}
+      Portal__Authority: ${PORTAL_AUTHORITY:-}
+      Portal__ClientId: ${PORTAL_CLIENT_ID:-}
+      Portal__ClientSecret: ${PORTAL_CLIENT_SECRET:-}
+
+      # Optional: ship backups to S3-compatible storage.
+      MINIO_ENDPOINT: ${MINIO_ENDPOINT:-}
+      MINIO_ACCESSKEY: ${MINIO_ACCESSKEY:-}
+      MINIO_SECRETKEY: ${MINIO_SECRETKEY:-}
+      MINIO_DEFAULT_BUCKETNAME: ${MINIO_DEFAULT_BUCKETNAME:-}
+      MINIO_REGION: ${MINIO_REGION:-}
+
+      # Optional: webhook alerts on failures (Slack/Discord-compatible).
+      Notifications__Enabled: ${NOTIFICATIONS_ENABLED:-false}
+      Notifications__Webhook__Url: ${NOTIFICATIONS_WEBHOOK_URL:-}
+    volumes:
+      - mdbdr-data:/data
+
+volumes:
+  mdbdr-data:
